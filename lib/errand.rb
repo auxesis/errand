@@ -1,11 +1,11 @@
-#!/usr/bin/env ruby 
+#!/usr/bin/env ruby
 
-# Attempt to load the native RRD library provided by the operating system. 
+# Attempt to load the native RRD library provided by the operating system.
 require 'RRD'
 
 # Errand:
-# Wraps the RRD Ruby library provided by your distribution's package manager, 
-# exposing a more Ruby-like and accessible interface. 
+# Wraps the RRD Ruby library provided by your distribution's package manager,
+# exposing a more Ruby-like and accessible interface.
 
 class Errand
   def initialize(opts={})
@@ -94,7 +94,7 @@ class Errand
       source[:name]
     }.join(':')
 
-    case 
+    case
     when time_specified && times.size == 1
       values = "#{times.first}:" + opts[:sources].map { |s|
         s[:value]
@@ -105,7 +105,7 @@ class Errand
     when time_specified && times.size > 1
       times.each do |t|
         points = opts[:sources].find_all { |source| source[:time] == t }
-      
+
         sources = points.map { |p|
           p[:name]
         }.join(':')
@@ -126,7 +126,7 @@ class Errand
       args = ["--template", sources, values]
       @backend.update(@filename, *args)
     end
-    
+
     true
   end
 
@@ -136,7 +136,7 @@ class Errand
 
   # ordered array of data sources as defined in rrd
   def data_sources
-    self.info.keys.grep(/^ds\[/).map { |ds| ds[3..-1].split(']').first}.uniq                                                                                    
+    self.info.keys.grep(/^ds\[/).map { |ds| ds[3..-1].split(']').first}.uniq
   end
 
 end
