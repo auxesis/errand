@@ -11,6 +11,8 @@ begin
     gemspec.email = "lindsay@holmwood.id.au"
     gemspec.homepage = "http://auxesis.github.com/errand"
     gemspec.authors = ["Lindsay Holmwood"]
+
+    gemspec.add_dependency "rrd-ffi"
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
