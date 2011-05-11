@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
@@ -14,13 +16,13 @@ rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
 end
 
-begin 
+begin
   require 'spec/rake/spectask'
-  
+
   Spec::Rake::SpecTask.new do |t|
     t.spec_opts = ["--options", "spec/spec.opts"]
   end
 rescue LoadError
   puts "RSpec not available. Install it with: gem install rspec"
 end
-  
+
