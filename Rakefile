@@ -6,7 +6,9 @@ require 'colorize'
 require 'pathname'
 $: << Pathname.new(__FILE__).parent.join('lib').expand_path.to_s
 require 'errand/version'
+require 'rspec/core/rake_task'
 
+RSpec::Core::RakeTask.new(:spec)
 
 desc "build gem"
 task :build => :verify do
@@ -75,4 +77,4 @@ end
 
 task :verify => 'verify:all'
 
-task :default => :features
+task :default => :spec
