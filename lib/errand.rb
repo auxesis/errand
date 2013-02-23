@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # Attempt to load the native RRD library provided by the operating system.
-require 'RRD'
+require 'rrd'
 
 # Errand:
 # Wraps the RRD Ruby library provided by your distribution's package manager,
@@ -11,7 +11,7 @@ class Errand
   def initialize(opts={})
     raise ArgumentError unless opts[:filename]
     @filename = opts[:filename]
-    @backend = ::RRD
+    @backend = ::RRD::Wrapper
   end
 
   def dump(opts={})
@@ -24,27 +24,25 @@ class Errand
   end
 
   def fetch(opts={})
-    start  = (opts[:start] || Time.now.to_i - 3600).to_s
-    finish = (opts[:finish] || Time.now.to_i).to_s
+    start    = (opts[:start] || Time.now.to_i - 3600).to_s
+    finish   = (opts[:finish] || Time.now.to_i).to_s
     function = opts[:function] ? opts[:function].to_s.upcase : "AVERAGE"
 
-    args = [@filename, "--start", start, "--end", finish, function]
+    args   = [ @filename, "--start", start, "--end", finish, function ]
 
-    data = @backend.fetch(*args)
-    start  = data[0]
-    finish = data[1]
-    labels = data[2]
-    values = data[3]
+    data   = @backend.fetch(*args)
+    labels = data.shift
     points = {}
 
-    # compose a saner representation of the data
     labels.each_with_index do |label, index|
       points[label] = []
-      values.each do |tuple|
-        value = tuple[index].nan? ? nil : tuple[index]
+      data.each do |tuple|
+        value = tuple[index]
         points[label] << value
       end
     end
+
+    points.delete('time')
 
     {:start => start, :finish => finish, :data => points}
   end
