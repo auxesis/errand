@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-source :rubygems
+source 'http://rubygems.org'
 
-group :development do
-  gem "jeweler"
-end
+gemspec
