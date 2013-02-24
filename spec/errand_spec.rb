@@ -44,12 +44,35 @@ describe Errand do
   end
 
   it "should update rrds" do
-    @rrd.create(:start => Time.now.to_i - 1, :step => 1,
-                :sources => [
-                  {:name => "Sum", :type => :gauge, :heartbeat => 1800, :min => 0, :max => 4294967295},
-                  {:name => "Total", :type => :gauge, :heartbeat => 1800, :min => 0, :max => 'U'} ],
-                :archives => [
-                  {:function => :average, :xff => 0.5, :steps => 1, :rows => 2400}]).should be_true
+    attrs = {
+      :start => Time.now.to_i - 1,
+      :step  => 1,
+      :sources => [
+        {
+          :name => "Sum",
+          :type => :gauge,
+          :heartbeat => 1800,
+          :min => 0,
+          :max => 4294967295
+        },
+        {
+          :name => "Total",
+          :type => :gauge,
+          :heartbeat => 1800,
+          :min => 0,
+          :max => 'U'
+        }
+      ],
+      :archives => [
+        {
+          :function => :average,
+          :xff => 0.5,
+          :steps => 1,
+          :rows => 2400
+        }
+      ]
+    }
+    @rrd.create(attrs).should be_true
 
     @rrd.update(:sources => [
                   {:name => "Sum", :value => 1},
