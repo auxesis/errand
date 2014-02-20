@@ -19,6 +19,10 @@ class Errand
     @backend.dump(@filename, output)
   end
 
+  def first
+    @backend.first(@filename)
+  end
+
   def last
     @backend.last(@filename)
   end
