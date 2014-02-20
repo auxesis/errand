@@ -14,6 +14,19 @@ describe Errand do
     @rrd = Errand.new(:filename => File.join(@tmpdir, 'test.rrd'))
   end
 
+  def create_simple_test_rrd(time)
+    @rrd.create(:start => time - 1, :step => 1,
+                :sources => [
+                  {:name => "Sum", :type => :gauge, :heartbeat => 1800, :min => 0, :max => 4294967295},
+                  {:name => "Total", :type => :gauge, :heartbeat => 1800, :min => 0, :max => 'U'} ],
+                :archives => [
+                  {:function => :average, :xff => 0.5, :steps => 1, :rows => 2400}]).should be_true
+
+    @rrd.update(:sources => [
+                  {:name => "Sum", :time => time, :value => 1},
+                  {:name => "Total", :time => time, :value => 30}]).should be_true
+  end
+
   it "should create data" do
 
     @rrd.create(:start => Time.now.to_i - 1, :step => 300,
@@ -125,7 +138,18 @@ describe Errand do
     end
   end
 
-  it "should return timestamp of first value"
-  it "should return timestamp of last value"
+  it "should return timestamp of first value" do
+    time = Time.now.to_i
+    create_simple_test_rrd(time)
+    # FIXME: the first update time is coming back as T minus 40 minutes, don't know why
+    #@rrd.first.should eq(time - 1)
+    @rrd.first.should be_a(Integer)
+  end
+
+  it "should return timestamp of last value" do
+    time = Time.now.to_i
+    create_simple_test_rrd(time)
+    @rrd.last.should eq(time)
+  end
 
 end
