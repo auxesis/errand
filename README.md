@@ -62,12 +62,25 @@ To fetch that data:
 
 ``` ruby
 @rrd.fetch # <= {:start => Time, :end => Time,
-                 :data => {"Counter" => [nil, nil, nil, 1]}
+                 :data =>  {"Counter" => [nil, nil, nil, 1]}
 ```
 
 Check under `spec/` for more usage examples.
 
 ## Developing
+
+Clone the repository:
+
+```
+git clone git@github.com:auxesis/errand.git
+```
+
+Suck down all the dependencies:
+
+``` bash
+cd errand
+bundle
+```
 
 ### Dependencies
 
@@ -101,22 +114,15 @@ rake spec
 
 ### Building the gem
 
-Errand is managed by Jeweller, which generates the gemspec for you:
+Build the gem:
 
 ``` bash
-rake gemspec
-```
-
-Once the gemspec is generated, build the gem:
-
-``` bash
-gem build errand.gemspec
+rake build
 ```
 
 ## TODO
 
 * Extend documentation with more examples
-
 
 ## License
 
